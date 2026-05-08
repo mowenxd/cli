@@ -1,0 +1,42 @@
+{
+    "name": "@mowenxd/cli",
+    "version": "0.3.0",
+    "description": "The official CLI for MoWen",
+    "keywords": [
+        "mo-cli",
+        "mocli",
+        "mowen",
+        "mowen-cli"
+    ],
+    "bin": {
+        "mocli": "bin/run.js"
+    },
+    "scripts": {
+        "postinstall": "node bin/install.js"
+    },
+    "os": [
+        "darwin",
+        "linux",
+        "win32"
+    ],
+    "cpu": [
+        "x64",
+        "arm64"
+    ],
+    "engines": {
+        "node": ">=16"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mowenxd/cli.git"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/",
+        "access": "public"
+    },
+    "license": "MIT",
+    "files": [
+        "bin/install.js",
+        "bin/run.js"
+    ]
+}
