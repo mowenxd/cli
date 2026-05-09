@@ -63,3 +63,4 @@ out/
 .pnp.*
 bin/mocli
 .claude
+RELEASE.md
