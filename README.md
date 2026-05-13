@@ -1,6 +1,8 @@
 # mocli
 
-墨问官方 CLI 工具、墨问官方 Skill 仓库。让墨问用户方便的使用自然语言与 AI Agent 交互，管理墨问笔记。 
+这里是墨问官方 CLI 工具、墨问官方 Skill 仓库。安装 mocli 和相关 Skills 之后，墨问用户可以使用自然语言在 AI Agent 工具里使用墨问，比如查看我的笔记、查询墨问动态、搜索用户等等，后续会增加更多功能，比如创建笔记等。
+
+mocli 和 Skills 一次安装，所有 Agent 可用，支持的 AI Agent 工具包含并不限于：OpenClaw（龙虾）、 Hermes Agent（爱马仕）、TRAE SOLO、Codex、Claude Code、Cursor、CodeBuddy 等等。
 
 ## 功能
 
@@ -28,7 +30,7 @@
 
 ## API Key
 
-墨问 API Key 是调用墨问 API 的私密凭证，墨问不会明文保存任何用户的私密凭证，所以获取了之后用户需要自行保存好。
+墨问 API Key 是调用墨问 API 的私密凭证，墨问不会明文保存任何用户的私密凭证，所以获取了之后用户需要自行保存好，目前已经对墨问用户全量开放。
 
 ### 如何获取
 
@@ -88,7 +90,23 @@ mocli help
 
 ## 使用示例\截图
 
-TODO
+**在 Claude App 里查询自己最近 3 小时的墨问动态**
+
+<p align="left">
+  <img src="assets/images/case-1.png" style="width: 90%; height: auto;">
+</p>
+
+**在 Codex 里查某用户的分类笔记**
+
+<p align="left">
+  <img src="assets/images/case-2.png" style="width: 90%; height: auto;">
+</p>
+
+**在龙虾里的使用场景， 给我最近半月写的墨问公开笔记做个分类统计**
+
+<p align="left">
+  <img src="assets/images/case-3.png" style="width: 90%; height: auto;">
+</p>
 
 ## License
 
