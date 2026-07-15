@@ -119,7 +119,7 @@ mocli help
 </p>
 
 <p align="left">
-  <img src="assets/images/case-4-2.png" style="width: 90%; height: auto;">
+  <img src="assets/images/case-4-2.jpg" style="width: 90%; height: auto;">
 </p>
 
 ## License
