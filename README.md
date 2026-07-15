@@ -1,6 +1,6 @@
 # mocli
 
-这里是墨问官方 CLI 工具、墨问官方 Skill 仓库。安装 mocli 和相关 Skills 之后，墨问用户可以使用自然语言在 AI Agent 工具里使用墨问，比如查看我的笔记、查询墨问动态、搜索用户等等，后续会增加更多功能，比如创建笔记等。
+这里是墨问官方 CLI 工具、墨问官方 Skill 仓库。安装 mocli 和相关 Skills 之后，墨问用户可以使用自然语言在 AI Agent 工具里使用墨问，比如查看我的笔记、查询墨问动态、搜索用户、创建或编辑笔记等等。
 
 mocli 和 Skills 一次安装，所有 Agent 可用，支持的 AI Agent 工具包含并不限于：OpenClaw（龙虾）、 Hermes Agent（爱马仕）、TRAE SOLO、Codex、Claude Code、Cursor、CodeBuddy 等等。
 
@@ -9,7 +9,7 @@ mocli 和 Skills 一次安装，所有 Agent 可用，支持的 AI Agent 工具�
 | 类别　　 | 命令　　　　　　 | 能力 |
 | --- | --- | --- |
 | 🔐 认证 | `mocli auth` | 初始化墨问 API Key、查看本机认证状态，并可校验 API Key 对应的墨问账号信息 |
-| 📝 笔记 | `mocli note` | 查看我的墨问笔记、查看指定用户主页笔记、搜索墨问笔记，并支持按场景筛选与列表化展示 |
+| 📝 笔记 | `mocli note` | 查看我的墨问笔记、查看指定用户主页笔记、搜索墨问笔记，并支持创建/编辑笔记、设置公开/私有/部分公开规则 |
 | 👤 用户 | `mocli user` | 搜索墨问用户，获取用户基础信息，方便后续查看主页笔记或设置备注名 |
 | 🏷️ 备注 | `mocli remark` | 为墨问 UID 设置本地昵称、查询已保存备注、移除备注，方便用类似“老池” “二爷” “五哥”这样的个人惯用昵称发起查询 |
 | 🔔 动态 | `mocli disco` | 获取墨问账号近期动态和社区更新，例如被关注、点赞、评论、收藏以及关注用户的新笔记 |
@@ -23,7 +23,7 @@ mocli 和 Skills 一次安装，所有 Agent 可用，支持的 AI Agent 工具�
 | --- | --- | --- |
 | 🧭 规则 | `mo-shared` | 墨问 CLI 的前置规则，覆盖 API Key 初始化、响应解析、错误处理、展示规范和安全约束 |
 | 🔐 认证 | `mo-auth` | 配置或更新墨问 API Key，查看当前认证状态，并获取 API Key 对应的墨问 Profile 信息 |
-| 📝 笔记 | `mo-note` | 查看我的笔记、查看指定用户主页笔记、搜索墨问笔记，适合“最近发表”“某人主页”“关键词搜索”等场景 |
+| 📝 笔记 | `mo-note` | 查看、搜索、创建、编辑、设置墨问笔记，适合“最近发表”“某人主页”“关键词搜索”“创建并发布”“改为私有”等场景 |
 | 👤 用户 | `mo-user` | 搜索墨问用户，获取用户基础信息，用于后续查看主页笔记或设置本地备注 |
 | 🏷️ 备注 | `mo-remark` | 为墨问 UID 设置本地备注名、移除备注名，或用备注名反查 UID，方便用类似“老池” “二爷” “五哥”这样的个人惯用昵称发起查询 |
 | 🔔 动态 | `mo-discover` | 查看自己的墨问动态，包括被关注、点赞、评论、收藏，以及关注用户发布的新笔记 |
@@ -71,6 +71,10 @@ npx skills add mowenxd/cli -y -g
     看看我最近发表了哪些公开笔记
     给我 10 篇池老师最热门的笔记
     看看今天下午我的墨问动态
+    帮我把这段文字保存成一篇墨问私有笔记
+    帮我把这个网页保存成一篇墨问私有笔记
+    帮我把这份 Markdown 文档保存成一篇墨问私有笔记
+    把这张图片上传到墨问，插入到当前笔记中作为封面
     ...
     ...
 ```
@@ -106,6 +110,16 @@ mocli help
 
 <p align="left">
   <img src="assets/images/case-3.png" style="width: 90%; height: auto;">
+</p>
+
+**在 Codex 里把墨问cli 的查询结果直接保存成墨问笔记,包括 pdf 文件和图片**
+
+<p align="left">
+  <img src="assets/images/case-4-1.jpg" style="width: 90%; height: auto;">
+</p>
+
+<p align="left">
+  <img src="assets/images/case-4-2.png" style="width: 90%; height: auto;">
 </p>
 
 ## License
