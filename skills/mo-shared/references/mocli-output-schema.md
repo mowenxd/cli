@@ -48,11 +48,13 @@
 | `brief` | string | 简介 | - |
 | `url` | string | 链接 | - |
 | `created_at` | integer | 创建时间，时间戳(s) | - |
+| `updated_at` | integer | 修改时间，时间戳(s) | - |
 | `public_at` | integer | 公开时间，时间戳(s) | - |
 | `flag` | object | 笔记标记信息 | [`NoteFlag - 笔记标记`](#note-flag) |
 | `content` | object | 笔记正文信息 | [`NoteContent - 笔记正文`](#note-content) |
 | `status` | object | 笔记状态信息 | [`NoteStatus - 笔记状态`](#note-status) |
 | `stat` | object | 笔记计数信息 | [`NoteStat - 笔记计数`](#note-stat) |
+| `embed` | object | 笔记引用索引信息 | [`NoteEmbed - 笔记引用索引`](#note-embed) |
 
 ---
 
@@ -64,6 +66,28 @@
 | 字段 | 类型 | 说明 | 引用字段 |
 |------|------|------|------|
 | `word_count` | integer | 字数计数 | - |
+| `ast` | object | 完整 NoteAtom JSON 正文。仅使用 `mocli note info --show-atom` 时返回 | [`mo-note-content - 墨问笔记正文语法树`](mo-note-content-schema.md) |
+
+---
+
+<a id="note-embed"></a>
+### NoteEmbed - 笔记引用索引
+
+| 字段 | 类型 | 说明 | 引用字段 |
+|------|------|------|------|
+| `ref` | object | 当前笔记引用的其它笔记 ID 索引 | [`NoteRef - 笔记引用/被引用 ID 索引`](#note-ref) |
+| `refed` | object | 引用当前笔记的其它笔记 ID 索引 | [`NoteRef - 笔记引用/被引用 ID 索引`](#note-ref) |
+
+---
+
+<a id="note-ref"></a>
+### NoteRef - 笔记引用/被引用 ID 索引
+
+| 字段 | 类型 | 说明 | 引用字段 |
+|------|------|------|------|
+| `all` | array[string] | 引用/被引用的全部笔记 ID | - |
+| `charge` | array[string] | 付费笔记 ID，属于 `all` 的子集 | - |
+| `free` | array[string] | 免费笔记 ID，属于 `all` 的子集 | - |
 
 ---
 
@@ -103,3 +127,19 @@
 | `collect` | integer | 收藏数 | - |
 | `share` | integer | 分享数 | - |
 | `comment` | integer | 评论数 | - |
+
+---
+
+<a id="comment-info"></a>
+### CommentInfo - 评论信息
+
+| 字段 | 类型 | 说明 | 引用字段 |
+|------|------|------|------|
+| `comment_id` | string | 评论 ID | - |
+| `uid` | string | 评论作者 UID | [`UserInfo - 用户信息`](#user-info) |
+| `created_at` | integer | 评论创建时间，时间戳(ms) | - |
+| `host_uid` | string | 被评论笔记作者 UID | [`UserInfo - 用户信息`](#user-info) |
+| `host_id` | string | 被评论笔记 ID | [`NoteInfo - 笔记信息`](#note-info) |
+| `reply_uid` | string | 被回复用户 UID；普通评论为空 | [`UserInfo - 用户信息`](#user-info) |
+| `reply_comment_id` | string | 被回复评论 ID；普通评论为空 | - |
+| `content_html` | string | 服务端返回的评论 HTML 正文 | - |
