@@ -22,6 +22,7 @@ metadata:
 * 用户要“从已有标签里选出 X 个标签，再给某篇笔记打标签/改标签”时，先使用 `mocli tag mine` 获取候选标签，再结合 [`mo-note`](../mo-note/SKILL.md) 的 `mocli note tag` 完成写入。
 * 用户没有说明标签类型时，默认按笔记标签处理，即使用 `--filter note` 或省略 `--filter`。
 * 用户要“给某篇笔记加标签/删除某篇笔记标签/覆盖某篇笔记标签”时，不使用本技能，改用 [`mo-note`](../mo-note/SKILL.md) 的 `mocli note tag`。
+* 用户要“查看某个/某些标签下的笔记、按标签筛选笔记”时，不使用本技能，改用 [`mo-note`](../mo-note/SKILL.md) 的 `mocli notes tagged`；需要先从已有标签中挑选时，先用 `mocli tag mine` 获取候选标签的名称和 ID。
 * 用户要“创建一个空标签/重命名标签/删除标签本身”时，说明当前 CLI 暂不支持该能力，不要用 `mocli tag mine` 假装执行写入。
 
 ## mocli tag mine [--filter]

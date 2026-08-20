@@ -1,7 +1,7 @@
 ---
 name: mo-note
 version: 0.1.0
-description: "墨问笔记。当创建笔记、编辑笔记、设置笔记、管理笔记标签、查看笔记详情及评论/引用摘要上下文、查看某人的主页笔记列表、我的笔记列表、搜索笔记时触发。"
+description: "墨问笔记。当创建笔记、编辑笔记、设置笔记、管理笔记标签、查看笔记详情及评论/引用摘要上下文、查看某人的主页笔记列表、我的笔记列表、搜索笔记、查看标签下的笔记列表时触发。"
 metadata:
   requires:
     bins: ["mocli"]
@@ -21,9 +21,10 @@ metadata:
 * 用户要“设置/修改笔记隐私/公开或私有某篇笔记/设置部分公开规则”时，使用 `mocli note set`。这是写入操作，执行前必须确认目标笔记 ID 和隐私设置；当前 `note set` 只支持隐私设置，不用于修改正文、标签或发布内容。
 * 用户要“设置/追加/移除/覆盖某篇笔记的标签”时，使用 `mocli note tag`。这是写入操作，执行前必须确认目标笔记 ID 和标签操作；`--reset` 是覆盖全量标签，会忽略同次命令里的 `--append` 和 `--remove`。
 * 用户要“查看某篇笔记详情/笔记信息/引用笔记/评论”且已经有笔记 ID 时，使用 `mocli note info --show-comment --show-refer`。这是读取操作；只有在编辑笔记前需要获取当前 NoteAtom 时才额外添加 `--show-atom`，其它场景避免使用 `--show-atom`。
-* 用户要“搜索某关键词相关笔记”时，使用 `mocli note search`。
-* 用户要“看某人的主页/公开笔记/热门笔记/付费笔记/合集”时，使用 `mocli note homepage`。
-* 用户要“看我自己的笔记/私有笔记/未公开笔记/我写过的笔记”时，使用 `mocli note mine`。
+* 用户要“搜索某关键词相关笔记”时，使用 `mocli notes search`。
+* 用户要“看某人的主页/公开笔记/热门笔记/付费笔记/合集”时，使用 `mocli notes homepage`。
+* 用户要“看我自己的笔记/私有笔记/未公开笔记/我写过的笔记”时，使用 `mocli notes mine`。
+* 用户要“看某个/某些标签下的笔记、按标签筛选我的笔记”时，使用 `mocli notes tagged`；只支持当前认证用户自己的标签，标签名称或 ID 不明确时，先用 [`mo-tag`](../mo-tag/SKILL.md) 的 `mocli tag mine` 获取候选。
 * 用户提到人名、昵称、备注名但没有给 UID 时，优先用 [`mo-remark`](../mo-remark/SKILL.md) 查 UID；未命中再考虑 `mocli user search` 或询问用户补充 UID。
 * 创建/编辑笔记正文时，如果需要把本地文件或远端 URL 转成墨问文件 ID，先使用 [`mo-misc`](../mo-misc/SKILL.md) 的 `mocli misc upload` 获取 `reply.file_id`。
 * 展示笔记列表时，优先按 `reply.note_ids` 的顺序遍历，再到 `reply.notes[note_id]` 获取笔记详情，并用 `reply.notes[note_id].uid` 到 `reply.users` 获取作者信息。
@@ -121,7 +122,7 @@ metadata:
 
   * 用户已经提供明确笔记 ID 和完整新正文时，复述目标笔记 ID 和正文来源，确认会覆盖原笔记正文后再执行。
   * 用户只提供笔记链接时，先从链接中提取笔记 ID；无法稳定提取时，请用户补充笔记 ID。
-  * 用户只说“修改我最新的笔记/修改某篇笔记”但没有给笔记 ID 时，先用 `mocli note mine` 或用户指定的上下文帮助定位候选笔记，再让用户确认具体笔记 ID。
+  * 用户只说“修改我最新的笔记/修改某篇笔记”但没有给笔记 ID 时，先用 `mocli notes mine` 或用户指定的上下文帮助定位候选笔记，再让用户确认具体笔记 ID。
   * 用户提出局部修改要求时，先获得完整正文树 JSON，再基于完整正文树生成替换后的新正文；不要把局部修改片段直接传给 `mocli note edit`。
   * 编辑前必须完成“覆盖风险强制门禁”；发现不支持节点或 marks 时，必须先向用户做阻塞式风险确认，不能把该提示留到执行后。
 
@@ -171,7 +172,7 @@ metadata:
 
   * 用户已经提供明确笔记 ID 和隐私类型时，复述目标笔记 ID、隐私类型和规则项，确认后再执行。
   * 用户只提供笔记链接时，先从链接中提取笔记 ID；无法稳定提取时，请用户补充笔记 ID。
-  * 用户只说“把我最新的笔记设为公开/私有/部分公开”但没有给笔记 ID 时，先用 `mocli note mine` 或用户指定的上下文帮助定位候选笔记，再让用户确认具体笔记 ID。
+  * 用户只说“把我最新的笔记设为公开/私有/部分公开”但没有给笔记 ID 时，先用 `mocli notes mine` 或用户指定的上下文帮助定位候选笔记，再让用户确认具体笔记 ID。
   * 用户要求“部分公开/规则公开”但没有说明是否禁止分享或过期时间时，默认允许分享且永久可见；如果语义可能影响用户预期，应简短确认。
 
 ### 使用原则
@@ -213,7 +214,7 @@ metadata:
 
   * 用户已经提供明确笔记 ID 和标签操作时，复述目标笔记 ID、操作类型和标签列表，确认后再执行。
   * 用户只提供笔记链接时，先从链接中提取笔记 ID；无法稳定提取时，请用户补充笔记 ID。
-  * 用户只说“给我最新的笔记加标签/改标签”但没有给笔记 ID 时，先用 `mocli note mine` 或用户指定的上下文帮助定位候选笔记，再让用户确认具体笔记 ID。
+  * 用户只说“给我最新的笔记加标签/改标签”但没有给笔记 ID 时，先用 `mocli notes mine` 或用户指定的上下文帮助定位候选笔记，再让用户确认具体笔记 ID。
   * 用户要求“从已有标签里选出 X 个标签再给这篇笔记打标签”时，先使用 [`mo-tag`](../mo-tag/SKILL.md) 的 `mocli tag mine` 获取当前已有标签候选；用户确认具体标签后，再执行本命令。
   * 用户同时表达“覆盖标签”和“追加/移除标签”时，优先按覆盖语义使用 `--reset`；如果语义不明确，先向用户确认。
 
@@ -385,7 +386,7 @@ metadata:
   * 评论作者：优先使用 `users[comment.uid].name`；如果评论是回复，可用 `comment.reply_uid` 到 `users` 查找被回复用户。当前 `CommentInfo` 不直接包含被回复评论的时间和内容，不要展示不存在的字段。
   * 字段缺失处理：`embed`、`comments`、`notes`、`users` 都可能为空；展示时跳过缺失部分即可，不要为了补全展示而额外使用 `--show-atom`。
 
-## mocli note search [--keyword] [--count] [--focus]
+## mocli notes search [--keyword] [--count] [--focus]
 
 本命令用于按关键词搜索笔记。`--keyword` 是必填参数；如果用户明确要求只搜索指定用户的笔记，先解析该用户 UID，再通过 `--focus` 指定 UID。
 
@@ -397,9 +398,9 @@ metadata:
 
 ### 使用示例
 
-  * 在墨问中搜索包含「AI Agent」关键词的笔记 `mocli note search --keyword "AI Agent"`
-  * 在墨问中搜索 10 篇包含「产品思考」的笔记 `mocli note search --keyword "产品思考" --count 10`
-  * 在墨问中搜索老池（指定 UID）写的「Prompt」相关笔记 `mocli note search --keyword "Prompt" --focus xxxxxxxx --count 20`
+  * 在墨问中搜索包含「AI Agent」关键词的笔记 `mocli notes search --keyword "AI Agent"`
+  * 在墨问中搜索 10 篇包含「产品思考」的笔记 `mocli notes search --keyword "产品思考" --count 10`
+  * 在墨问中搜索老池（指定 UID）写的「Prompt」相关笔记 `mocli notes search --keyword "Prompt" --focus xxxxxxxx --count 20`
 
 ### 输出示例
 
@@ -447,9 +448,9 @@ metadata:
 | `notes` | map[string]NoteInfo | 笔记信息 `Map`，键为笔记 ID，值为笔记信息。 | [`NoteInfo - 笔记信息`](../mo-shared/references/mocli-output-schema.md#note-info) |
 | `users` | map[string]UserInfo | 用户信息 `Map`，键为用户 UID，值为用户信息。展示作者时用 `notes[note_id].uid` 到该 Map 中查找。 | [`UserInfo - 用户信息`](../mo-shared/references/mocli-output-schema.md#user-info) |
 
-## mocli note homepage [--uid] [--filter] [--count] [--recent]
+## mocli notes homepage [--uid] [--filter] [--count] [--recent]
 
-本命令用于查看某个用户个人主页上的笔记列表，即对外展示的笔记；它不同于 `mocli note mine`，不会返回当前认证用户的私有笔记。用户未提供 `--uid` 时，默认查看当前认证用户的主页。
+本命令用于查看某个用户个人主页上的笔记列表，即对外展示的笔记；它不同于 `mocli notes mine`，不会返回当前认证用户的私有笔记。用户未提供 `--uid` 时，默认查看当前认证用户的主页。
 
 可选参数：
 
@@ -460,10 +461,10 @@ metadata:
 
 ### 使用示例
 
-  * 看看我最近发表了哪些笔记 `mocli note homepage --recent 3d`
-  * 给我 10 篇二爷发表过的付费笔记 `mocli note homepage --uid xxxxxxxx --filter fee --count 10`
-  * 给我 10 篇老池最近 3 天发表过的笔记合集 `mocli note homepage --uid xxxxxxxx --filter album --count 10 --recent 3d`
-  * 给我 30 篇池老师最热门的笔记 `mocli note homepage --uid xxxxxx --filter popular --count 30`
+  * 看看我最近发表了哪些笔记 `mocli notes homepage --recent 3d`
+  * 给我 10 篇二爷发表过的付费笔记 `mocli notes homepage --uid xxxxxxxx --filter fee --count 10`
+  * 给我 10 篇老池最近 3 天发表过的笔记合集 `mocli notes homepage --uid xxxxxxxx --filter album --count 10 --recent 3d`
+  * 给我 30 篇池老师最热门的笔记 `mocli notes homepage --uid xxxxxx --filter popular --count 30`
 
 ### 输出示例
 
@@ -511,9 +512,9 @@ metadata:
 | `notes` | map[string]NoteInfo | 笔记信息 `Map`，键为笔记 ID，值为笔记信息。 | [`NoteInfo - 笔记信息`](../mo-shared/references/mocli-output-schema.md#note-info) |
 | `users` | map[string]UserInfo | 用户信息 `Map`，键为用户 UID，值为用户信息。展示作者时用 `notes[note_id].uid` 到该 Map 中查找。 | [`UserInfo - 用户信息`](../mo-shared/references/mocli-output-schema.md#user-info) |
 
-## mocli note mine [--filter] [--count] [--recent]
+## mocli notes mine [--filter] [--count] [--recent]
 
-本命令用于查看当前认证用户创作的笔记列表，可能包含私有、部分公开、完全公开和付费笔记。它不同于 `mocli note homepage`：`mine` 面向当前认证用户的创作管理视角，`homepage` 面向主页公开展示视角。用户只说“我的笔记”时优先使用本命令；如果用户明确说“我的主页笔记/公开主页”，使用 `homepage`。
+本命令用于查看当前认证用户创作的笔记列表，可能包含私有、部分公开、完全公开和付费笔记。它不同于 `mocli notes homepage`：`mine` 面向当前认证用户的创作管理视角，`homepage` 面向主页公开展示视角。用户只说“我的笔记”时优先使用本命令；如果用户明确说“我的主页笔记/公开主页”，使用 `homepage`。
 
 可选参数：
 
@@ -523,9 +524,86 @@ metadata:
 
 ### 使用示例
 
-  * 看看我最近 3 天写的笔记 `mocli note mine --recent 3d`
-  * 给我 10 篇我自己的付费笔记 `mocli note mine --filter fee --count 10`
-  * 给我 20 篇我自己的私有笔记（近 3 天） `mocli note mine --filter priv --count 20 --recent 3d`
+  * 看看我最近 3 天写的笔记 `mocli notes mine --recent 3d`
+  * 给我 10 篇我自己的付费笔记 `mocli notes mine --filter fee --count 10`
+  * 给我 20 篇我自己的私有笔记（近 3 天） `mocli notes mine --filter priv --count 20 --recent 3d`
+
+### 输出示例
+
+```
+{
+  "code": 0,
+  "status": "OK",
+  "reply": {
+    "note_ids": [
+      "3jv1AiAjXJ4aBC83LqdMC",
+      "ZVDGaChlin5voLpIp_9TM"
+    ],
+    "notes": {
+      "3jv1AiAjXJ4aBC83LqdMC": {
+        "note_id": "3jv1AiAjXJ4aBC83LqdMC",
+        "uid": "Qiz5hxiY5wr5L76fyd8Kv",
+        "title": "最近心情",
+        "brief": "笔记摘要",
+        "url": "https://note.mowen.cn/detail/3jv1AiAjXJ4aBC83LqdMC?from=mocli"
+      },
+      "ZVDGaChlin5voLpIp_9TM": {
+        "note_id": "ZVDGaChlin5voLpIp_9TM",
+        "uid": "Qiz5hxiY5wr5L76fyd8Kv",
+        "title": "大家好呀，我是小白",
+        "brief": "笔记摘要",
+        "url": "https://note.mowen.cn/detail/ZVDGaChlin5voLpIp_9TM?from=mocli"
+      }
+    },
+    "users": {
+      "Qiz5hxiY5wr5L76fyd8Kv": {
+        "uid": "xxxxxxxxxxxxxx",
+        "name": "精卫鸟.",
+        "intro": "一只小小鸟，订阅我的没几个人，所以你们都是特殊的。。"
+      }
+    }
+  }
+}
+```
+
+### reply 字段说明
+
+| 字段 | 类型 | 说明 | 引用字段 |
+|------|------|------|------|
+| `note_ids` | array | 笔记 ID 列表（有序）。展示列表时优先遍历该字段。 | - |
+| `notes` | map[string]NoteInfo | 笔记信息 `Map`，键为笔记 ID，值为笔记信息。 | [`NoteInfo - 笔记信息`](../mo-shared/references/mocli-output-schema.md#note-info) |
+| `users` | map[string]UserInfo | 用户信息 `Map`，键为用户 UID，值为用户信息。展示作者时用 `notes[note_id].uid` 到该 Map 中查找。 | [`UserInfo - 用户信息`](../mo-shared/references/mocli-output-schema.md#user-info) |
+
+## mocli notes tagged [--tag-id] [--tag-name] [--count]
+
+本命令用于查看当前认证用户指定标签下的笔记列表，即“按标签筛选我的笔记”。只支持当前认证用户自己的标签，不支持查看其他用户标签下的笔记。它是读取操作，不修改任何笔记或标签。
+
+多个标签（`--tag-id` 与 `--tag-name` 混合传入也算）之间是交集（AND）逻辑：只返回同时打上了所有指定标签的笔记；指定标签越多，结果越收敛。
+
+可选参数：
+
+  * `--tag-id string`：逗号分隔的标签 ID 列表，最多 5 个；空项和非法 ID（非数字、0、负数）会被忽略。
+  * `--tag-name string`：逗号分隔的标签名称列表，最多 5 个；标签名称由服务端解析为当前认证用户的标签。
+  * `--count int`：返回笔记数量。范围：`1-100`。默认：`20`。
+
+`--tag-id` 和 `--tag-name` 至少需要提供一个；两者组合使用时，名称会先解析成标签 ID，与显式 ID 合并去重后一起做交集筛选。
+
+### 使用原则
+
+  * 用户提供标签名称时，直接使用 `--tag-name`；标签名称解析依赖当前认证用户已有的标签，名称不存在时该名称不会命中任何笔记。
+  * 用户只提供模糊的标签描述、或需要先从已有标签中挑选时，先使用 [`mo-tag`](../mo-tag/SKILL.md) 的 `mocli tag mine` 获取当前已有标签的名称和 ID，确认后再执行本命令。
+  * 标签 ID 明确（例如来自 `mocli tag mine` 或 `mocli note tag` 返回的 `tags[].id`）时，优先使用 `--tag-id`，避免名称歧义。
+  * 标签用英文逗号拼接；空标签会被忽略，重复标签会被去重；`--tag-id` 和 `--tag-name` 各自最多 5 个，超出部分会被截断。
+  * 多标签是交集语义，只返回同时具备所有指定标签的笔记；用户想要“任一标签命中”的并集结果时，应分多次按单个标签查询再自行合并，并向用户说明这一差异。
+  * 执行后按共享规则解析顶层 `code`、`status`、`reason`；成功时按 `reply.note_ids` 顺序展示笔记列表，失败时展示 `reason`、`msg`、`meta.hints` 等可执行信息。
+  * 如果 `reply.note_ids` 为空，明确说明该标签组合下没有返回笔记，不要编造笔记。
+
+### 使用示例
+
+  * 查看「AI」标签下的笔记 `mocli notes tagged --tag-name "AI"`
+  * 查看同时具备「AI」和「产品思考」标签的 10 篇笔记（交集） `mocli notes tagged --tag-name "AI,产品思考" --count 10`
+  * 按标签 ID 查看笔记 `mocli notes tagged --tag-id "11,12"`
+  * 组合标签 ID 和名称做交集筛选 `mocli notes tagged --tag-id "11" --tag-name "产品思考"`
 
 ### 输出示例
 
