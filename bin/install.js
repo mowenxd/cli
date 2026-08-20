@@ -10,7 +10,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
+const { execSync, execFileSync } = require("child_process");
 const os = require("os");
 
 const VERSION = require("../package.json").version;
@@ -73,11 +73,13 @@ function download(url, destPath) {
 
   // --ssl-revoke-best-effort: 在 Windows (Schannel) 下，规避证书吊销列表服务不可达时
   // 报出的 CRYPT_E_REVOCATION_OFFLINE 错误
-  const sslFlag = isWindows ? "--ssl-revoke-best-effort " : "";
-  execSync(
-    `curl ${sslFlag}--fail --location --silent --show-error --connect-timeout 10 --max-time 120 --output "${destPath}" "${url}"`,
-    { stdio: ["ignore", "ignore", "pipe"] }
-  );
+  const curlArgs = [
+    "--fail", "--location", "--silent", "--show-error",
+    "--connect-timeout", "10", "--max-time", "120",
+    "--output", destPath, url
+  ];
+  if (isWindows) curlArgs.unshift("--ssl-revoke-best-effort");
+  execFileSync("curl", curlArgs, { stdio: ["ignore", "ignore", "pipe"] });
 }
 
 // 安装
